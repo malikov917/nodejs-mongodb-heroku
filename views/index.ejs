@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kostya is awesome</title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body>
+    <% include templates/header.ejs %>
+
+    <ul>
+        <% for (var i = 0; i < 3; i++){ %>
+        <li><h1>Kostya is <%= compliments[i] %></h1></li>
+        <% } %>
+    </ul>
+
+    <h3>BECAUSE: </h3>
+
+    <ul>
+        <% videodata.categories.forEach(function(item){ %>
+            <li>
+                <%= item.categoryName %>
+            </li>
+        <%})%>
+    </ul>
+
+    <h3>AND: </h3>
+    <h4>Write your variant here</h4>
+    <form action="/test/submit" method="post">
+        <input type="text" name="id">
+        <button type="submit">Yep!</button>
+    </form>
+
+
+</body>
+</html>
