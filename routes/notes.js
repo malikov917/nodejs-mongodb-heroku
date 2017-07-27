@@ -2,28 +2,23 @@ let express = require('express');
 let router = express.Router();
 let ObjectID = require('mongoose').ObjectID;
 let Kitten = require('../schemas/kitty.schema').Kitten;
+let Notes = require('../schemas/notes.schema').Notes;
 
 /* POST new NOTE. */
 router.post('/', function (req, res) {
-    let note = {title: req.body.title, body: req.body.body };
-    if (note.title && note.body) {
-        db.collection('notes').insertOne(note, (err, response) => {
-            if (err) {
-                res.send(err);
-            } else {
-                res.send(note);
-            }
-        });
-    } else {
-        res.writeHead(400, {"Content-Type": "application/json"});
-        res.write('Fields `title` and `body` are required!');
-        res.end();
-    }
+    let auth = req.headers.authorization;
+    let item = {title: req.body.title, body: req.body.body, auth: auth };
+    let note = new Notes(item);
+    db.collection('notes').insertOne(note, (err, resp) => {
+        if (err) return res.send(err.toJSON);
+        res.send(note);
+    })
 });
 
 /* GET all NOTES */
 router.get('/', (req, res) => {
-    db.collection('notes').find().toArray((err, results) => {
+    let auth = req.headers.authorization;
+    db.collection('notes').find({auth: auth}).toArray((err, results) => {
         res.send(results);
     })
 });
@@ -33,6 +28,16 @@ router.get('/test', (req, res) => {
     var fluffy = new Kitten({ name: 'fluffy', age: '4' });
     fluffy.speak(); // "Meow name is fluffy"
     db.collection('cats').find().toArray((err, results) => {
+        if (err) return res.send(err);
+        res.send(results);
+    })
+});
+
+/* TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST  */
+router.post('/test', (req, res) => {
+    var fluffy = new Kitten({ name: req.body.title, age: req.body.body });
+    console.log(req.body);
+    db.collection('cats').insertOne(fluffy, (err, results) => {
         if (err) return res.send(err);
         res.send(results);
     })
