@@ -4,8 +4,9 @@
 let Schema = require('mongoose').Schema;
 
 let kittySchema = Schema({
-    name: {type: String, required: true},
-    age: {type: String, required: false}
+    name: String,
+    age: String,
+    auth: String
 });
 
 // NOTE: methods must be added to the schema before compiling it with mongoose.model()

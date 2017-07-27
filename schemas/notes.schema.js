@@ -4,10 +4,10 @@
 let Schema = require('mongoose').Schema;
 
 let notes = new Schema({
-    title: {type: String, required: true},
-    body: {type: String, required: false},
+    title: String,
+    body: String,
     auth: String
-}, {collection: 'notes'});
+});
 
 let Notes = db.model('Notes', notes);
 
