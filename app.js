@@ -5,11 +5,15 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
+global.db = require('./config/db');
+
 let index = require('./routes/index');
 let about = require('./routes/about');
 let notes = require('./routes/notes');
 
 let app = express();
+
+
 
 app.locals.videodata = require('./videodata.json');
 

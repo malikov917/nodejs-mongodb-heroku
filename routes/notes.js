@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
-let ObjectID = require('mongodb').ObjectID;
+let ObjectID = require('mongoose').ObjectID;
+let Kitten = require('../schemas/kitty.schema').Kitten;
 
 /* POST new NOTE. */
 router.post('/', function (req, res) {
@@ -23,7 +24,16 @@ router.post('/', function (req, res) {
 /* GET all NOTES */
 router.get('/', (req, res) => {
     db.collection('notes').find().toArray((err, results) => {
-        console.log(err);
+        res.send(results);
+    })
+});
+
+/* TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST  */
+router.get('/test', (req, res) => {
+    var fluffy = new Kitten({ name: 'fluffy', age: '4' });
+    fluffy.speak(); // "Meow name is fluffy"
+    db.collection('cats').find().toArray((err, results) => {
+        if (err) return res.send(err);
         res.send(results);
     })
 });
