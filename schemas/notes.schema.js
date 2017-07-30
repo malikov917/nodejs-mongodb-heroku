@@ -9,6 +9,11 @@ let notes = new Schema({
     auth: String
 });
 
+// NOTE: methods must be added to the schema before compiling it with mongoose.model()
+notes.methods.anymethod = function () {
+    // any actions
+};
+
 let Notes = db.model('Notes', notes);
 
 module.exports = {

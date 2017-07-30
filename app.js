@@ -10,6 +10,7 @@ global.db = require('./config/db');
 let index = require('./routes/index');
 let about = require('./routes/about');
 let notes = require('./routes/notes');
+let user = require('./routes/user');
 
 let app = express();
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/about', about);
 app.use('/notes', notes);
+app.use('/user', user);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
