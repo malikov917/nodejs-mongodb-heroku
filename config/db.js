@@ -1,9 +1,10 @@
 /**
  * Created by Konstantin on 23.07.2017.
  */
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
-var dbURI = 'mongodb://administrator:administrator@ds119533.mlab.com:19533/mongodbtest';
+let dbURI = 'mongodb://administrator:administrator@ds119533.mlab.com:19533/mongodbtest';
 
 db = mongoose.connect(dbURI, { useMongoClient: true });
 

@@ -1,56 +1,30 @@
 let express = require('express');
 let router = express.Router();
-let ObjectID = require('mongodb').ObjectID;
 let Note = require('../impl/notes.impl');
 
-/* POST new NOTE. */
+/* Add new NOTE to database */
 router.post('/', function (req, res) {
-    new Note(req, res).postOne();
+    new Note(req, res).add();
 });
 
-/* GET all NOTES */
+/* Get entire COLLECTION */
 router.get('/', (req, res) => {
-    let auth = req.headers.authorization;
-
-    db.collection('notes').find({auth: auth}).toArray((err, results) => {
-        res.send(results);
-    })
+    new Note(req, res).getEntireCollection();
 });
 
-/* GET NOTE by _id */
+/* Get NOTE by id */
 router.get(`/:id`, (req, res) => {
-    new Note(req, res).getById();
+    new Note(req, res).get();
 });
 
-/* DELETE NOTE by _id */
+/* Delete NOTE by id */
 router.delete(`/:id`, (req, res) => {
-    let auth = req.headers.authorization;
-
-    let id = req.params.id;
-    let details = {'_id': new ObjectID(id)};
-    db.collection('notes').removeOne(details, (err, item) => {
-        if (err) {
-            res.send({'error': err});
-        } else {
-            res.send(item);
-        }
-    })
+    new Note(req, res).delete();
 });
 
-/* UPDATE NOTE by _id */
+/* Update NOTE by id */
 router.put(`/:id`, (req, res) => {
-    let auth = req.headers.authorization;
-
-    let id = req.params.id;
-    let note = {text: req.body.body, title: req.body.title};
-    let details = {'_id': new ObjectID(id)};
-    db.collection('notes').updateOne(details, note, (err, item) => {
-        if (err) {
-            res.send({'error': err});
-        } else {
-            res.send(note);
-        }
-    })
+    new Note(req, res).update();
 });
 
 module.exports = router;

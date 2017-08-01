@@ -7,7 +7,7 @@ let notes = new Schema({
     title: String,
     body: String,
     auth: String
-});
+}, {collection: 'notes'});
 
 // NOTE: methods must be added to the schema before compiling it with mongoose.model()
 notes.methods.anymethod = function () {
