@@ -4,17 +4,17 @@ let Note = require('../impl/notes.impl');
 
 /* Add new NOTE to database */
 router.post('/', function (req, res) {
-    new Note(req, res).add();
-});
-
-/* Get entire COLLECTION */
-router.get('/', (req, res) => {
-    new Note(req, res).getEntireCollection();
+    new Note(req, res).create();
 });
 
 /* Get NOTE by id */
 router.get(`/:id`, (req, res) => {
-    new Note(req, res).get();
+    new Note(req, res).read();
+});
+
+/* Get entire COLLECTION */
+router.get('/', (req, res) => {
+    new Note(req, res).readEntireCollection();
 });
 
 /* Delete NOTE by id */

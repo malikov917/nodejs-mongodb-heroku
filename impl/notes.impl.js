@@ -6,13 +6,13 @@ let ObjectID = require('mongodb').ObjectID;
 let collection = 'notes';
 
 module.exports = class Note {
-    constructor(req, res){
+    constructor(req, res) {
         this.req = req;
         this.res = res;
         this.auth = req.headers.authorization;
 
         console.log(this.auth);
-        if (this.auth)  {
+        if (this.auth) {
             return this;
         } else {
             res.sendStatus(401);
@@ -21,78 +21,80 @@ module.exports = class Note {
     }
 
     /**
-     * ADD NEW NOTE TO DATABASE
+     * ADD NEW NOTE TO DATABASE v1
      */
-    add(){
-        let item = {
+    create() {
+        let note = new Notes({
             title: this.req.body.title,
             body: this.req.body.body,
-            auth: this.auth };
-
-        if (!(item.title && item.body && item.auth)) return this.res.send('You sent: ' + this.req.body + ' \nNOTE is: { title, body } ');
-
-        let note = new Notes(item);
+            auth: this.auth
+        });
         note.save((err, res) => {
-            if (err) return this.res.send(err.toJSON);
+            if (err) return this.res.send(err);
             this.res.send(res);
         });
     }
 
     /**
-     * GET NOTE BY ID
+     * GET NOTE BY ID v1
      */
-    get() {
+    read() {
         let id = this.req.params.id;
-        let select = {_id: new ObjectID(id), auth: this.auth};
+        let select = {_id: id, auth: this.auth};
 
-        if (!(select._id && select.auth)) return this.res.send('You can get NOTE by setting params: _id');
-
-        db.collection(collection).findOne(select, (err, item) => {
-            if (err) this.res.send({'error': err});
-            this.res.send(item);
-        })
-    }
-
-    /**
-     * Get entire collection
-     */
-    getEntireCollection(){
-        db.collection(collection).find({auth: this.auth}).toArray((err, results) => {
-            this.res.send(results);
-        })
-    }
-
-    /**
-     * Delete item from collection by ID
-     */
-    delete(){
-        let id = this.req.params.id;
-        let select = {'_id': new ObjectID(id)};
-        db.collection(collection).removeOne(select, (err, item) => {
-            if (err) this.res.send({'error': err});
+        Notes.findOne(select, (err, item) => {
+            if (err) return this.res.status(500).send(err);
+            if (item) {
                 this.res.send(item);
+            } else {
+                this.res.send({message: 'No item found with that ID', id: id});
+            }
         })
     }
 
     /**
-     * Update item in collection by ID
+     * Get entire collection v1
+     */
+    readEntireCollection() {
+        Notes.find({auth: this.auth}, (err, results) => {
+            if (err) return this.res.status(500).send(err);
+            if (results) {
+                this.res.send(results);
+            } else {
+                this.res.send({message: 'No results found'});
+            }
+        });
+    }
+
+    /**
+     * Update item in collection by ID v1
      */
     update() {
-/*        let id = this.req.params.id;
-        let item = {
-            title: this.req.body.title,
-            body: this.req.body.body
-        };
+        let id = this.req.params.id;
 
-        let select = {'_id': new ObjectID(id)};
-
-        db.collection(collection).findById(id, (err, res) => {
-            if (err) this.res.send({'error': err});
+        Notes.findById(id, (err, res) => {
+            if (err) return this.res.status(500).send(err);
             res.title = this.req.body.title || res.title;
             res.body = this.req.body.body || res.body;
             res.auth = this.req.body.auth || res.auth;
 
-            this.res.send(res);
-        })*/
+            res.save((err, res) => {
+                if (err) return this.res.status(500).send(err);
+                this.res.send(res);
+            })
+        });
+
+    }
+
+    /**
+     * Delete item from collection by ID v1
+     */
+    delete() {
+        let id = this.req.params.id;
+        let select = {'_id': id, auth: this.auth};
+        Notes.findByIdAndRemove(select, (err) => {
+            if (err) return this.res.send(err);
+            this.res.send({message: "Item successfully deleted", id: id});
+        })
     }
 };

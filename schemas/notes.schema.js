@@ -4,9 +4,9 @@
 let Schema = require('mongoose').Schema;
 
 let notes = new Schema({
-    title: String,
-    body: String,
-    auth: String
+    title: {type: String, required: true},
+    body: {type: String, required: true},
+    auth: {type: String, required: true}
 }, {collection: 'notes'});
 
 // NOTE: methods must be added to the schema before compiling it with mongoose.model()
