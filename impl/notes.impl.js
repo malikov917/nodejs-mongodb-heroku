@@ -10,14 +10,6 @@ module.exports = class Note {
         this.req = req;
         this.res = res;
         this.auth = req.headers.authorization;
-
-        console.log(this.auth);
-        if (this.auth) {
-            return this;
-        } else {
-            res.sendStatus(401);
-            return;
-        }
     }
 
     /**
