@@ -2,8 +2,6 @@
  * Created by Konstantin on 28.07.2017.
  */
 let Notes = require('../schemas/notes.schema').Notes;
-let ObjectID = require('mongodb').ObjectID;
-let collection = 'notes';
 
 module.exports = class Note {
     constructor(req, res) {
