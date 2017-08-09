@@ -1,6 +1,6 @@
 # Start your Nodejs project here!
 <p align="center">
-  <a href="https://nodejs.org/">
+  <a href="https://github.com/nodejs/node/blob/master/README.md">
     <img alt="Node.js" src="https://nodejs.org/static/images/logo-light.svg" width="400"/>
   </a>
 </p>
